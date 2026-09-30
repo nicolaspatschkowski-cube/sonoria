@@ -1,0 +1,206 @@
+/* sonoria.fr — feuille de style, refonte 2021 */
+:root{
+  --ardoise:#1F2A33;
+  --vert:#5CA872;          /* accent de marque — boutons, liens, prix */
+  --terre:#B4553C;
+  --ecru:#EDE6DA;
+  --gris:#8C9196;
+  --blanc:#FBFAF7;
+  --filet:#E4DDD0;
+  --carte:#FFFFFF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--blanc);color:var(--ardoise);
+  font:400 17px/1.65 Inter,system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Space Grotesk',Helvetica Neue,Arial,sans-serif;font-weight:500;line-height:1.14}
+h1{font-size:3rem;letter-spacing:-.02em;margin:0 0 .45em}
+h2{font-size:1.8rem;letter-spacing:-.01em;margin:4.2rem 0 1.4rem}
+/* Filet d'accent sous les titres de section. */
+h2::before{content:'';display:block;width:46px;height:3px;background:var(--vert);margin:0 0 20px}
+h3{font-size:1.2rem;margin:2.4rem 0 .5rem}
+p{margin:0 0 1.15em}
+a{color:var(--vert)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+main.wrap{padding-top:64px;padding-bottom:24px}
+
+header.site{background:var(--ecru);border-bottom:1px solid #ddd5c7}
+header.site .wrap{display:flex;align-items:center;gap:34px;min-height:82px;flex-wrap:wrap}
+.logo{font-family:'Space Grotesk',Arial,sans-serif;font-weight:500;font-size:1.35rem;
+  letter-spacing:.09em;color:var(--ardoise);text-decoration:none}
+nav.site ul{list-style:none;display:flex;gap:24px;margin:0;padding:0;flex-wrap:wrap}
+nav.site a{color:var(--ardoise);text-decoration:none;font-size:.95rem}
+nav.site a:hover{color:var(--vert)}
+
+.bouton{display:inline-block;background:var(--vert);color:#fff;text-decoration:none;
+  padding:14px 28px;border-radius:6px;font-weight:500;border:0;cursor:pointer;font-size:1rem;
+  line-height:1.2}
+.bouton--fantome{background:transparent;color:var(--vert);border:1px solid var(--vert)}
+.actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+/* ── EN-TÊTE DE PAGE — pleine largeur, hors gouttière ───────────────────── */
+.hero{background:var(--ecru)}
+.hero__img{aspect-ratio:21/9;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero__txt{padding:72px 0 8px;max-width:52ch}
+.hero__txt h1{margin-bottom:.35em}
+.baseline{font-size:1.2rem;color:var(--gris);max-width:60ch}
+.hero__txt .actions{margin-top:34px}
+
+/* ── LES CARTES ────────────────────────────────────────────────────────────
+   Rapport d'image IDENTIQUE partout : quatre cartes dont les photos ne se
+   coupent pas à la même hauteur donnent une rangée bancale, et c'est la
+   première chose qui fait qu'une page n'a pas l'air finie. */
+.grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:28px;margin:0}
+.carte{border:1px solid var(--filet);border-radius:10px;overflow:hidden;background:var(--carte);
+  display:flex;flex-direction:column}
+/* DEUX SORTES DE VITRE, parce qu'il y a deux sortes de photo.
+   Un PRODUIT est un objet : on le montre en entier, sur un fond, dans un cadre
+   carré — et les douze fiches ont alors la même silhouette même si leurs photos
+   sources vont du 928×1152 au 1376×768. Rogner un panneau vertical dans un
+   cadre paysage en coupait le haut et le bas : on voyait une tranche de feutre,
+   pas un panneau.
+   Une SCÈNE — un plateau de bureau, une médiathèque — se recadre au contraire
+   sans rien perdre : c'est un lieu, pas un objet. */
+.carte__vitre{aspect-ratio:1;background:var(--ecru);overflow:hidden;padding:18px;
+  display:flex;align-items:center;justify-content:center}
+.carte__vitre img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;border-radius:4px}
+.carte__vitre--scene{aspect-ratio:4/3;padding:0}
+.carte__vitre--scene img{width:100%;height:100%;object-fit:cover;max-width:none;max-height:none;border-radius:0}
+.carte__corps{padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+/* Deux lignes réservées au nom : un seul titre qui passe à la ligne décale le
+   prix et le lien de toute une rangée, et c'est ce décalage qu'on lit comme
+   « pas fini » avant même d'avoir lu les mots. */
+.carte__nom{font-family:'Space Grotesk',Arial,sans-serif;font-size:1.06rem;margin:0;
+  line-height:1.25;min-height:2.5em}
+.carte__corps p{margin:0}
+.carte__corps .fine{margin-top:auto}
+.prix{color:var(--vert);font-weight:600;font-variant-numeric:tabular-nums}
+
+/* ── LA FICHE PRODUIT ──────────────────────────────────────────────────────
+   Deux colonnes : la photo encadrée à gauche, ce qu'il faut pour décider à
+   droite. Avant, la photo faisait 900 px de haut en pleine largeur et la page
+   ressemblait à une image avec du texte dessous. */
+.fiche{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:60px;align-items:start}
+/* Vitre CARRÉE et image CONTENUE. Les douze photos produit n'ont pas le même
+   rapport — 928×1152 pour les panneaux muraux, 1376×768 pour les baffles et les
+   dalles. Un cadre au rapport d'une seule de ces familles rognerait les autres
+   de moitié ; un cadre carré qui contient montre chaque produit en entier et
+   donne aux douze fiches la même silhouette. C'est ce que fait un catalogue. */
+.fiche__vitre{aspect-ratio:1;background:var(--ecru);border:1px solid var(--filet);
+  border-radius:12px;padding:30px;display:flex;align-items:center;justify-content:center}
+.fiche__vitre img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;
+  border-radius:5px;box-shadow:0 20px 44px -28px rgba(31,42,51,.5)}
+.fiche__info h1{font-size:2.5rem}
+.fiche__prix{font-size:1.9rem;margin:0 0 1.1rem}
+.fiche__cle{margin:32px 0 0;padding:22px 0 0;border-top:1px solid var(--filet);
+  display:grid;grid-template-columns:auto 1fr;gap:10px 26px;font-size:.98rem}
+.fiche__cle dt{color:var(--gris)}
+.fiche__cle dd{margin:0;font-variant-numeric:tabular-nums}
+.fiche__info .actions{margin-top:30px}
+
+/* ── LA GALERIE ────────────────────────────────────────────────────────────
+   Quatre colonnes, un seul rapport, une seule gouttière. Avant : cinq
+   vignettes sur la première rangée et trois sur la seconde, à des rapports
+   différents, avec un bord droit en dents de scie. */
+.galerie{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:0}
+.galerie__vitre{aspect-ratio:4/3;background:var(--ecru);border:1px solid var(--filet);
+  border-radius:8px;overflow:hidden}
+.galerie img{width:100%;height:100%;object-fit:cover;display:block}
+.galerie--trois{grid-template-columns:repeat(3,1fr)}
+.galerie--deux{grid-template-columns:repeat(2,1fr);max-width:760px}
+
+/* ── IMAGE DE CONTENU ────────────────────────────────────────────────────── */
+.illus{display:block;margin:8px 0 2rem}
+
+table.specs{border-collapse:collapse;margin:0;width:100%}
+table.specs th,table.specs td{border-bottom:1px solid var(--filet);padding:14px 16px;
+  text-align:left;font-size:.98rem}
+table.specs tr:first-child th,table.specs tr:first-child td{border-top:1px solid var(--filet)}
+table.specs th{width:42%;font-weight:400;color:var(--gris)}
+table.specs td{font-variant-numeric:tabular-nums}
+.deux-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start}
+
+form.devis{max-width:620px;margin:0}
+form.devis label{display:block;margin:20px 0 6px;font-size:.92rem;color:var(--gris)}
+form.devis input,form.devis select,form.devis textarea{
+  width:100%;padding:12px;border:1px solid #d8d2c5;border-radius:5px;font:inherit;background:#fff}
+
+/* Configurateur — le plan cliquable */
+.plan{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;max-width:660px;margin:0}
+.plan__case{aspect-ratio:1;background:var(--ecru);border-radius:5px;display:flex;
+  align-items:center;justify-content:center;color:var(--gris);font-size:.82rem;cursor:pointer}
+.plan__case:hover{background:#e2dccd}
+.plan__case.on{background:var(--vert);color:#fff}
+.plan__onglets{display:flex;gap:8px;margin:0 0 22px}
+.plan__onglet{padding:10px 18px;background:var(--ecru);border-radius:6px;cursor:pointer;font-size:.92rem}
+.plan__onglet.on{background:var(--vert);color:#fff}
+
+footer.site{background:var(--ardoise);color:#cfd4d8;margin-top:96px;padding:56px 0 40px;font-size:.92rem}
+footer.site a{color:#cfd4d8}
+footer.site ul{list-style:none;padding:0;display:flex;gap:26px;flex-wrap:wrap;margin:22px 0}
+footer.site .logo{color:#fff}
+.fine{color:var(--gris);font-size:.88rem}
+/* Renvois de bas de page. */
+.aussi{margin:4.5rem 0 0;padding-top:26px;border-top:1px solid var(--filet)}
+.aussi__t{font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;color:var(--gris);margin:0 0 12px}
+.aussi ul{list-style:none;padding:0;margin:0;display:flex;gap:8px 28px;flex-wrap:wrap;font-size:.95rem}
+.avis{border-left:3px solid var(--ecru);padding:6px 0 6px 22px;margin:24px 0;color:#43505a}
+.etoiles{color:var(--terre);letter-spacing:.1em}
+[hidden]{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.bouton:disabled{opacity:.75;cursor:progress}
+.lien-bouton{background:none;border:0;padding:0;font:inherit;font-size:.92rem;color:var(--ardoise);
+  text-decoration:underline;cursor:pointer}
+
+/* ── ACHAT EN LIGNE ────────────────────────────────────────────────────── */
+.achat{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;margin:30px 0 0}
+.achat__qte{margin:0}
+.achat label{display:block;font-size:.92rem;margin:0 0 6px}
+.achat input{width:84px;padding:12px;border:1px solid #d8d2c5;border-radius:5px;font:inherit;background:#fff}
+.achat__etat{margin:12px 0 0;font-size:.95rem;min-height:1.65em}
+.fiche__info .achat__pro{margin-top:14px}
+.achat__pro span{font-size:.92rem;color:#43505a}
+
+/* ── PANIER ET COMMANDE ────────────────────────────────────────────────── */
+.etapes{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;font-size:.95rem}
+.etapes li{padding:8px 18px;border-radius:999px;background:var(--ecru);color:#43505a}
+.etapes li[aria-current]{background:var(--ardoise);color:#fff}
+.etape h2{margin-top:2.8rem}
+.etape h2:focus{outline:none}
+table.lignes{border-collapse:collapse;width:100%;margin:0}
+table.lignes th,table.lignes td{border-bottom:1px solid var(--filet);padding:14px 12px;text-align:left;vertical-align:middle}
+table.lignes thead th{font-size:.86rem;font-weight:400;color:#43505a}
+table.lignes .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.lignes input{width:76px;padding:8px 10px;border:1px solid #d8d2c5;border-radius:5px;font:inherit;background:#fff}
+.ref{font-size:.86rem;color:#43505a}
+.totaux{display:grid;grid-template-columns:1fr auto;gap:10px 0;max-width:420px;margin:24px 0 0 auto;
+  font-variant-numeric:tabular-nums}
+.totaux dt{color:#43505a}
+.totaux dd{margin:0;padding-left:40px;text-align:right}
+.totaux .total{font-weight:600;font-size:1.15rem;color:var(--ardoise);border-top:1px solid var(--filet);padding-top:10px}
+.mention{color:#43505a;text-align:right;margin:10px 0 0}
+.etape .actions{margin-top:30px}
+form.commande{max-width:620px;margin:0}
+.consigne{color:#43505a;margin:0}
+form.commande label{display:block;margin:20px 0 6px;font-size:.95rem}
+form.commande input[type=text],form.commande input[type=email]{width:100%;padding:12px;border:1px solid #d8d2c5;
+  border-radius:5px;font:inherit;background:#fff}
+.case{display:flex;gap:12px;align-items:flex-start;margin:28px 0 0}
+.case input{width:20px;height:20px;margin:3px 0 0;flex:none;accent-color:var(--ardoise)}
+form.commande .case label{margin:0}
+.recap{list-style:none;padding:0;margin:0}
+.recap li{display:flex;justify-content:space-between;gap:24px;padding:12px 0;border-bottom:1px solid var(--filet)}
+.recap .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+fieldset.moyens{border:1px solid var(--filet);border-radius:10px;padding:14px 22px 16px;margin:28px 0 0}
+fieldset.moyens legend{padding:0 8px;font-weight:600}
+.moyen{display:flex;gap:12px;align-items:center;padding:7px 0}
+.moyen input{width:18px;height:18px;margin:0;accent-color:var(--ardoise)}
+
+/* ── BANDEAU COOKIES ───────────────────────────────────────────────────── */
+.cookies{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ardoise);color:var(--ecru);
+  box-shadow:0 -12px 32px -20px rgba(31,42,51,.55);font-size:.95rem;line-height:1.5}
+.cookies .wrap{display:flex;align-items:center;gap:14px 30px;flex-wrap:wrap;padding-top:18px;padding-bottom:18px}
+.cookies p{margin:0;flex:1 1 440px}
+.cookies a{color:var(--ecru)}
+.cookies .bouton{padding:11px 30px}

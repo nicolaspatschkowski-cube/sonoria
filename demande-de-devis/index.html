@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0N0R1A25X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-S0N0R1A25X');
+  </script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Demander un devis — Sonoria</title>
+  <meta name="description" content="Recevez une étude et un devis pour votre projet acoustique.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;600&display=block" rel="stylesheet">
+  <link rel="stylesheet" href="/sonoria/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="/sonoria/">SONORIA</a>
+    <nav class="site" aria-label="Menu principal"><ul>
+      <li><a href="/sonoria/">Accueil</a></li>
+      <li><a href="/sonoria/panneaux-acoustiques">Nos panneaux</a></li>
+      <li><a href="/sonoria/bureau-etudes">Bureau d'études</a></li>
+      <li><a href="/sonoria/notre-atelier">L'atelier</a></li>
+      <li><a href="/sonoria/blog">Blog</a></li>
+      <li><a href="/sonoria/contact">Contact</a></li>
+    </ul></nav>
+    <a href="/sonoria/panier" id="lien-panier" style="margin-left:auto;color:var(--ardoise);text-decoration:none;font-size:.94rem">Panier (<span id="panier-compte">0</span>)</a>
+    <a class="bouton" href="/sonoria/demande-de-devis">Demander un devis</a>
+  </div>
+</header>
+<div class="cookies" id="bandeau-cookies" role="region" aria-label="Cookies" hidden>
+  <div class="wrap">
+    <p>Nous utilisons des cookies pour améliorer votre expérience et mesurer l'audience du site. <a href="/sonoria/mentions-legales">En savoir plus</a></p>
+    <button class="bouton" type="button" id="cookies-ok">OK</button>
+  </div>
+</div>
+<script>
+(function () {
+  var CLE = 'sonoria-panier';
+  var lien = document.getElementById('lien-panier');
+  var racine = lien ? lien.getAttribute('href').replace(/\/panier\/?$/, '') : '';
+  function lire() {
+    try {
+      var l = JSON.parse(localStorage.getItem(CLE) || '[]');
+      return Array.isArray(l) ? l.filter(function (x) {
+        return x && typeof x.id === 'string' && x.qte >= 1 && x.qte <= 99;
+      }) : [];
+    } catch (e) { return []; }
+  }
+  function nombre(l) {
+    return (l || lire()).reduce(function (n, x) { return n + x.qte; }, 0);
+  }
+  function entete() {
+    var c = document.getElementById('panier-compte');
+    if (c) c.textContent = nombre();
+  }
+  function ecrire(l) {
+    try {
+      if (l.length) localStorage.setItem(CLE, JSON.stringify(l));
+      else localStorage.removeItem(CLE);
+    } catch (e) {}
+    entete();
+  }
+  function ajouter(id, qte) {
+    var l = lire(), trouve = false;
+    l.forEach(function (x) { if (x.id === id) { x.qte = Math.min(99, x.qte + qte); trouve = true; } });
+    if (!trouve) l.push({ id: id, qte: qte });
+    ecrire(l);
+  }
+  window.SonoriaPanier = { racine: racine, lire: lire, ecrire: ecrire, ajouter: ajouter,
+    nombre: nombre, vider: function () { ecrire([]); } };
+  entete();
+  window.addEventListener('pageshow', entete);
+  window.addEventListener('storage', function (e) { if (e.key === CLE) entete(); });
+
+  var b = document.getElementById('bandeau-cookies');
+  var vu = null;
+  try { vu = localStorage.getItem('sonoria-cookies'); } catch (e) {}
+  if (!b || vu) return;
+  b.hidden = false;
+  function marge() { document.body.style.paddingBottom = b.hidden ? '' : b.offsetHeight + 'px'; }
+  marge();
+  window.addEventListener('load', marge);
+  window.addEventListener('resize', marge);
+  document.getElementById('cookies-ok').addEventListener('click', function () {
+    try { localStorage.setItem('sonoria-cookies', 'ok'); } catch (e) {}
+    b.hidden = true;
+    marge();
+  });
+})();
+</script>
+<main class="wrap">
+<h1>Demander un devis</h1>
+<p class="baseline">Remplissez le formulaire, le bureau d'études vous répond sous
+48 heures ouvrées.</p>
+<img src="/sonoria/img/assemblage-controle.jpg" alt="Un acousticien du bureau d'études devant un plan d'implantation" class="illus">
+<form class="devis" method="post" action="/demande-de-devis">
+  <label for="civilite">Civilité *</label>
+  <select id="civilite" name="civilite" required><option value=""></option><option>Madame</option><option>Monsieur</option></select>
+  <label for="prenom">Prénom *</label>
+  <input type="text" id="prenom" name="prenom" required>
+  <label for="nom">Nom *</label>
+  <input type="text" id="nom" name="nom" required>
+  <label for="societe">Société *</label>
+  <input type="text" id="societe" name="societe" required>
+  <label for="fonction">Fonction *</label>
+  <input type="text" id="fonction" name="fonction" required>
+  <label for="email">Adresse e-mail *</label>
+  <input type="email" id="email" name="email" required>
+  <label for="telephone">Téléphone *</label>
+  <input type="tel" id="telephone" name="telephone" required>
+  <label for="adresse">Adresse du chantier *</label>
+  <input type="text" id="adresse" name="adresse" required>
+  <label for="cp">Code postal *</label>
+  <input type="text" id="cp" name="cp" required>
+  <label for="ville">Ville *</label>
+  <input type="text" id="ville" name="ville" required>
+  <label for="surface">Surface à traiter (m²) *</label>
+  <input type="text" id="surface" name="surface" required>
+  <label for="budget">Budget envisagé</label>
+  <select id="budget" name="budget"><option value=""></option><option>moins de 2 000 €</option><option>2 000 à 10 000 €</option><option>10 000 à 30 000 €</option><option>plus de 30 000 €</option></select>
+  <label for="delai">Délai souhaité</label>
+  <select id="delai" name="delai"><option value=""></option><option>moins d'un mois</option><option>1 à 3 mois</option><option>plus de 3 mois</option></select>
+  <label for="message">Votre projet</label>
+  <textarea id="message" name="message" rows="5"></textarea>
+  <p class="fine">Les champs marqués * sont obligatoires.</p>
+  <p><button class="bouton" type="submit">Envoyer ma demande</button></p>
+</form>
+
+<nav class="aussi" aria-label="Voir aussi">
+  <p class="aussi__t">Voir aussi</p>
+  <ul><li><a href="/sonoria/contact-devis">Nous contacter pour un devis</a></li></ul>
+</nav>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p class="logo" style="color:#fff">SONORIA</p>
+    <p>Le calme, ça se fabrique.<br>Atelier et siège : Roubaix (Nord) — 1400 m²</p>
+    <ul>
+      <li><a href="/sonoria/qui-sommes-nous">Qui sommes-nous</a></li>
+      <li><a href="/sonoria/demande-de-devis">Demander un devis</a></li>
+      <li><a href="/sonoria/mentions-legales">Mentions légales</a></li>
+      <li><a href="/sonoria/media/plaquette-2021.pdf">Plaquette (PDF)</a></li>
+      <li><a href="/sonoria/media/cgv.pdf">Conditions générales (PDF)</a></li>
+    </ul>
+    <p class="fine">© 2018–2025 Sonoria SAS — Site refondu en 2021</p>
+  </div>
+</footer>
+</body>
+</html>

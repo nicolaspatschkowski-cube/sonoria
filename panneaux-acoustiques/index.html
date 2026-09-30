@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0N0R1A25X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-S0N0R1A25X');
+  </script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Panneaux acoustiques en feutre recyclé | Sonoria</title>
+  <meta name="description" content="Découvrez la gamme Sonoria de panneaux acoustiques en feutre de textile recyclé.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;600&display=block" rel="stylesheet">
+  <link rel="stylesheet" href="/sonoria/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="/sonoria/">SONORIA</a>
+    <nav class="site" aria-label="Menu principal"><ul>
+      <li><a href="/sonoria/">Accueil</a></li>
+      <li><a href="/sonoria/panneaux-acoustiques">Nos panneaux</a></li>
+      <li><a href="/sonoria/bureau-etudes">Bureau d'études</a></li>
+      <li><a href="/sonoria/notre-atelier">L'atelier</a></li>
+      <li><a href="/sonoria/blog">Blog</a></li>
+      <li><a href="/sonoria/contact">Contact</a></li>
+    </ul></nav>
+    <a href="/sonoria/panier" id="lien-panier" style="margin-left:auto;color:var(--ardoise);text-decoration:none;font-size:.94rem">Panier (<span id="panier-compte">0</span>)</a>
+    <a class="bouton" href="/sonoria/demande-de-devis">Demander un devis</a>
+  </div>
+</header>
+<div class="cookies" id="bandeau-cookies" role="region" aria-label="Cookies" hidden>
+  <div class="wrap">
+    <p>Nous utilisons des cookies pour améliorer votre expérience et mesurer l'audience du site. <a href="/sonoria/mentions-legales">En savoir plus</a></p>
+    <button class="bouton" type="button" id="cookies-ok">OK</button>
+  </div>
+</div>
+<script>
+(function () {
+  var CLE = 'sonoria-panier';
+  var lien = document.getElementById('lien-panier');
+  var racine = lien ? lien.getAttribute('href').replace(/\/panier\/?$/, '') : '';
+  function lire() {
+    try {
+      var l = JSON.parse(localStorage.getItem(CLE) || '[]');
+      return Array.isArray(l) ? l.filter(function (x) {
+        return x && typeof x.id === 'string' && x.qte >= 1 && x.qte <= 99;
+      }) : [];
+    } catch (e) { return []; }
+  }
+  function nombre(l) {
+    return (l || lire()).reduce(function (n, x) { return n + x.qte; }, 0);
+  }
+  function entete() {
+    var c = document.getElementById('panier-compte');
+    if (c) c.textContent = nombre();
+  }
+  function ecrire(l) {
+    try {
+      if (l.length) localStorage.setItem(CLE, JSON.stringify(l));
+      else localStorage.removeItem(CLE);
+    } catch (e) {}
+    entete();
+  }
+  function ajouter(id, qte) {
+    var l = lire(), trouve = false;
+    l.forEach(function (x) { if (x.id === id) { x.qte = Math.min(99, x.qte + qte); trouve = true; } });
+    if (!trouve) l.push({ id: id, qte: qte });
+    ecrire(l);
+  }
+  window.SonoriaPanier = { racine: racine, lire: lire, ecrire: ecrire, ajouter: ajouter,
+    nombre: nombre, vider: function () { ecrire([]); } };
+  entete();
+  window.addEventListener('pageshow', entete);
+  window.addEventListener('storage', function (e) { if (e.key === CLE) entete(); });
+
+  var b = document.getElementById('bandeau-cookies');
+  var vu = null;
+  try { vu = localStorage.getItem('sonoria-cookies'); } catch (e) {}
+  if (!b || vu) return;
+  b.hidden = false;
+  function marge() { document.body.style.paddingBottom = b.hidden ? '' : b.offsetHeight + 'px'; }
+  marge();
+  window.addEventListener('load', marge);
+  window.addEventListener('resize', marge);
+  document.getElementById('cookies-ok').addEventListener('click', function () {
+    try { localStorage.setItem('sonoria-cookies', 'ok'); } catch (e) {}
+    b.hidden = true;
+    marge();
+  });
+})();
+</script>
+<main class="wrap">
+<h1>Nos panneaux acoustiques</h1>
+<p class="baseline">Douze produits, tous en feutre de textile de récupération,
+tous fabriqués à Roubaix (Nord).</p>
+<img src="/sonoria/img/decoupe-numerique.jpg" alt="Panneaux en cours de découpe à l'atelier" class="illus">
+<h2>Les douze panneaux</h2>
+<div class="grille">
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/panneau-trois-quarts.jpg" alt="Panneau mural Feutre Uni 60×60"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Panneau mural Feutre Uni 60×60</h3>
+    <p class="fine">600 × 600 mm · 24 mm</p>
+    <p class="prix">89 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/mural-uni-60">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/panneau-mural-grand.jpg" alt="Panneau mural Feutre Uni 60×120"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Panneau mural Feutre Uni 60×120</h3>
+    <p class="fine">600 × 1200 mm · 24 mm</p>
+    <p class="prix">149 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/mural-uni-120">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/panneau-mural-motif.jpg" alt="Panneau mural Feutre Motif 60×120"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Panneau mural Feutre Motif 60×120</h3>
+    <p class="fine">600 × 1200 mm · 24 mm</p>
+    <p class="prix">169 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/mural-motif">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-grand-format.jpg" alt="Panneau grand format 120×120"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Panneau grand format 120×120</h3>
+    <p class="fine">1200 × 1200 mm · 32 mm</p>
+    <p class="prix">289 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/grand-format-120">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-baffle.jpg" alt="Baffle suspendu 120×40"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Baffle suspendu 120×40</h3>
+    <p class="fine">1200 × 400 mm · 40 mm</p>
+    <p class="prix">145 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/baffle">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-cloisonnette.jpg" alt="Cloisonnette de bureau 160×60"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Cloisonnette de bureau 160×60</h3>
+    <p class="fine">1600 × 600 mm · 32 mm</p>
+    <p class="prix">249 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/cloisonnette">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-cabine.jpg" alt="Cabine phonique 1 personne"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Cabine phonique 1 personne</h3>
+    <p class="fine">1000 × 1000 × 2200 mm · 60 mm</p>
+    <p class="prix">4 900 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/cabine">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-absorbeur-angle.jpg" alt="Absorbeur d'angle 100×30"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Absorbeur d'angle 100×30</h3>
+    <p class="fine">1000 × 300 mm · 50 mm</p>
+    <p class="prix">119 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/absorbeur-angle">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-tableau.jpg" alt="Tableau acoustique imprimé 80×60"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Tableau acoustique imprimé 80×60</h3>
+    <p class="fine">800 × 600 mm · 24 mm</p>
+    <p class="prix">219 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/tableau">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-ecran-visio.jpg" alt="Écran de visio 90×60"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Écran de visio 90×60</h3>
+    <p class="fine">900 × 600 mm · 24 mm</p>
+    <p class="prix">179 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/ecran-visio">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-dalle-plafond.jpg" alt="Dalle de plafond 60×60 (lot de 6)"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Dalle de plafond 60×60 (lot de 6)</h3>
+    <p class="fine">600 × 600 mm ×6 · 20 mm</p>
+    <p class="prix">299 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/dalle-plafond">Voir le panneau</a></p>
+  </div>
+</article>
+<article class="carte">
+  <div class="carte__vitre"><img src="/sonoria/img/studio-rideau.jpg" alt="Rideau acoustique 140×260"></div>
+  <div class="carte__corps">
+    <h3 class="carte__nom">Rideau acoustique 140×260</h3>
+    <p class="fine">1400 × 2600 mm · 12 mm</p>
+    <p class="prix">349 €</p>
+    <p><a href="/sonoria/panneaux-acoustiques/rideau">Voir le panneau</a></p>
+  </div>
+</article>
+</div>
+
+<nav class="aussi" aria-label="Voir aussi">
+  <p class="aussi__t">Voir aussi</p>
+  <ul><li><a href="/sonoria/panneaux-acoustiques/mousse-alveolaire">Mousse alvéolaire</a></li></ul>
+</nav>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p class="logo" style="color:#fff">SONORIA</p>
+    <p>Le calme, ça se fabrique.<br>Atelier et siège : Roubaix (Nord) — 1400 m²</p>
+    <ul>
+      <li><a href="/sonoria/qui-sommes-nous">Qui sommes-nous</a></li>
+      <li><a href="/sonoria/demande-de-devis">Demander un devis</a></li>
+      <li><a href="/sonoria/mentions-legales">Mentions légales</a></li>
+      <li><a href="/sonoria/media/plaquette-2021.pdf">Plaquette (PDF)</a></li>
+      <li><a href="/sonoria/media/cgv.pdf">Conditions générales (PDF)</a></li>
+    </ul>
+    <p class="fine">© 2018–2025 Sonoria SAS — Site refondu en 2021</p>
+  </div>
+</footer>
+</body>
+</html>

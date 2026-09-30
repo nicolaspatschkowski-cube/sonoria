@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0N0R1A25X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-S0N0R1A25X');
+  </script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Panneaux acoustiques en feutre recyclé | Sonoria</title>
+  <meta name="description" content="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;600&display=block" rel="stylesheet">
+  <link rel="stylesheet" href="/sonoria/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="/sonoria/">SONORIA</a>
+    <nav class="site" aria-label="Menu principal"><ul>
+      <li><a href="/sonoria/">Accueil</a></li>
+      <li><a href="/sonoria/panneaux-acoustiques">Nos panneaux</a></li>
+      <li><a href="/sonoria/bureau-etudes">Bureau d'études</a></li>
+      <li><a href="/sonoria/notre-atelier">L'atelier</a></li>
+      <li><a href="/sonoria/blog">Blog</a></li>
+      <li><a href="/sonoria/contact">Contact</a></li>
+    </ul></nav>
+    <a href="/sonoria/panier" id="lien-panier" style="margin-left:auto;color:var(--ardoise);text-decoration:none;font-size:.94rem">Panier (<span id="panier-compte">0</span>)</a>
+    <a class="bouton" href="/sonoria/demande-de-devis">Demander un devis</a>
+  </div>
+</header>
+<div class="cookies" id="bandeau-cookies" role="region" aria-label="Cookies" hidden>
+  <div class="wrap">
+    <p>Nous utilisons des cookies pour améliorer votre expérience et mesurer l'audience du site. <a href="/sonoria/mentions-legales">En savoir plus</a></p>
+    <button class="bouton" type="button" id="cookies-ok">OK</button>
+  </div>
+</div>
+<script>
+(function () {
+  var CLE = 'sonoria-panier';
+  var lien = document.getElementById('lien-panier');
+  var racine = lien ? lien.getAttribute('href').replace(/\/panier\/?$/, '') : '';
+  function lire() {
+    try {
+      var l = JSON.parse(localStorage.getItem(CLE) || '[]');
+      return Array.isArray(l) ? l.filter(function (x) {
+        return x && typeof x.id === 'string' && x.qte >= 1 && x.qte <= 99;
+      }) : [];
+    } catch (e) { return []; }
+  }
+  function nombre(l) {
+    return (l || lire()).reduce(function (n, x) { return n + x.qte; }, 0);
+  }
+  function entete() {
+    var c = document.getElementById('panier-compte');
+    if (c) c.textContent = nombre();
+  }
+  function ecrire(l) {
+    try {
+      if (l.length) localStorage.setItem(CLE, JSON.stringify(l));
+      else localStorage.removeItem(CLE);
+    } catch (e) {}
+    entete();
+  }
+  function ajouter(id, qte) {
+    var l = lire(), trouve = false;
+    l.forEach(function (x) { if (x.id === id) { x.qte = Math.min(99, x.qte + qte); trouve = true; } });
+    if (!trouve) l.push({ id: id, qte: qte });
+    ecrire(l);
+  }
+  window.SonoriaPanier = { racine: racine, lire: lire, ecrire: ecrire, ajouter: ajouter,
+    nombre: nombre, vider: function () { ecrire([]); } };
+  entete();
+  window.addEventListener('pageshow', entete);
+  window.addEventListener('storage', function (e) { if (e.key === CLE) entete(); });
+
+  var b = document.getElementById('bandeau-cookies');
+  var vu = null;
+  try { vu = localStorage.getItem('sonoria-cookies'); } catch (e) {}
+  if (!b || vu) return;
+  b.hidden = false;
+  function marge() { document.body.style.paddingBottom = b.hidden ? '' : b.offsetHeight + 'px'; }
+  marge();
+  window.addEventListener('load', marge);
+  window.addEventListener('resize', marge);
+  document.getElementById('cookies-ok').addEventListener('click', function () {
+    try { localStorage.setItem('sonoria-cookies', 'ok'); } catch (e) {}
+    b.hidden = true;
+    marge();
+  });
+})();
+</script>
+<main class="wrap">
+<div class="fiche">
+  <div class="fiche__vitre"><img src="/sonoria/img/studio-dalle-plafond.jpg"></div>
+  <div class="fiche__info">
+    <h1>Dalle de plafond 60×60 (lot de 6)</h1>
+    <p class="prix fiche__prix">299 €</p>
+    <p class="baseline">Panneau absorbant en feutre de textile de récupération,
+    20 mm d'épaisseur. Fabriqué à Roubaix (Nord), délai 18 jours.</p>
+    <dl class="fiche__cle">
+      <dt>Dimensions</dt><dd>600 × 600 mm ×6</dd>
+      <dt>Épaisseur</dt><dd>20 mm</dd>
+      <dt>Absorption α<sub>w</sub></dt><dd>0.88</dd>
+      <dt>Poids</dt><dd>8,4 kg</dd>
+    </dl>
+    <p class="actions"><a class="bouton" href="/sonoria/demande-de-devis">Demander un devis</a></p>
+  </div>
+</div>
+
+<h2>Caractéristiques</h2>
+<table class="specs">
+  <tr><th>Référence</th><td>SON-DP-6060</td></tr>
+  <tr><th>Dimensions</th><td>600 × 600 mm ×6</td></tr>
+  <tr><th>Épaisseur</th><td>20 mm</td></tr>
+  <tr><th>Coefficient d'absorption α<sub>w</sub></th><td>0.88</td></tr>
+  <tr><th>Poids</th><td>8,4 kg</td></tr>
+  <tr><th>Matière</th><td>Feutre de textile de récupération</td></tr>
+  <tr><th>Délai</th><td>18 jours</td></tr>
+</table>
+
+<h2>Pose</h2>
+<p>Livré avec ses fixations. La pose se fait en quelques minutes, à deux pour les
+grands formats.</p>
+
+<h2>En images</h2>
+<div class="galerie">
+  <div class="galerie__vitre"><img src="/sonoria/img/dalles-plafond.jpg"></div>
+  <div class="galerie__vitre"><img src="/sonoria/img/panneau-sur-mesure.jpg"></div>
+  <div class="galerie__vitre"><img src="/sonoria/img/baffles-plafond.jpg"></div>
+  <div class="galerie__vitre"><img src="/sonoria/img/cloisonnette-bureau.jpg"></div>
+  <div class="galerie__vitre"><img src="/sonoria/img/cabine-acoustique.jpg"></div>
+  <div class="galerie__vitre"><img src="/sonoria/img/absorbeur-angle.jpg"></div>
+  <div class="galerie__vitre"><img src="/sonoria/img/tableau-acoustique.jpg"></div>
+  <div class="galerie__vitre"><img src="/sonoria/img/ecran-visio.jpg"></div>
+</div>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p class="logo" style="color:#fff">SONORIA</p>
+    <p>Le calme, ça se fabrique.<br>Atelier et siège : Roubaix (Nord) — 1400 m²</p>
+    <ul>
+      <li><a href="/sonoria/qui-sommes-nous">Qui sommes-nous</a></li>
+      <li><a href="/sonoria/demande-de-devis">Demander un devis</a></li>
+      <li><a href="/sonoria/mentions-legales">Mentions légales</a></li>
+      <li><a href="/sonoria/media/plaquette-2021.pdf">Plaquette (PDF)</a></li>
+      <li><a href="/sonoria/media/cgv.pdf">Conditions générales (PDF)</a></li>
+    </ul>
+    <p class="fine">© 2018–2025 Sonoria SAS — Site refondu en 2021</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0N0R1A25X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-S0N0R1A25X');
+  </script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact — Sonoria</title>
+  <meta name="description" content="Atelier de Roubaix, téléphone, formulaire.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;600&display=block" rel="stylesheet">
+  <link rel="stylesheet" href="/sonoria/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="/sonoria/">SONORIA</a>
+    <nav class="site" aria-label="Menu principal"><ul>
+      <li><a href="/sonoria/">Accueil</a></li>
+      <li><a href="/sonoria/panneaux-acoustiques">Nos panneaux</a></li>
+      <li><a href="/sonoria/bureau-etudes">Bureau d'études</a></li>
+      <li><a href="/sonoria/notre-atelier">L'atelier</a></li>
+      <li><a href="/sonoria/blog">Blog</a></li>
+      <li><a href="/sonoria/contact">Contact</a></li>
+    </ul></nav>
+    <a href="/sonoria/panier" id="lien-panier" style="margin-left:auto;color:var(--ardoise);text-decoration:none;font-size:.94rem">Panier (<span id="panier-compte">0</span>)</a>
+    <a class="bouton" href="/sonoria/demande-de-devis">Demander un devis</a>
+  </div>
+</header>
+<div class="cookies" id="bandeau-cookies" role="region" aria-label="Cookies" hidden>
+  <div class="wrap">
+    <p>Nous utilisons des cookies pour améliorer votre expérience et mesurer l'audience du site. <a href="/sonoria/mentions-legales">En savoir plus</a></p>
+    <button class="bouton" type="button" id="cookies-ok">OK</button>
+  </div>
+</div>
+<script>
+(function () {
+  var CLE = 'sonoria-panier';
+  var lien = document.getElementById('lien-panier');
+  var racine = lien ? lien.getAttribute('href').replace(/\/panier\/?$/, '') : '';
+  function lire() {
+    try {
+      var l = JSON.parse(localStorage.getItem(CLE) || '[]');
+      return Array.isArray(l) ? l.filter(function (x) {
+        return x && typeof x.id === 'string' && x.qte >= 1 && x.qte <= 99;
+      }) : [];
+    } catch (e) { return []; }
+  }
+  function nombre(l) {
+    return (l || lire()).reduce(function (n, x) { return n + x.qte; }, 0);
+  }
+  function entete() {
+    var c = document.getElementById('panier-compte');
+    if (c) c.textContent = nombre();
+  }
+  function ecrire(l) {
+    try {
+      if (l.length) localStorage.setItem(CLE, JSON.stringify(l));
+      else localStorage.removeItem(CLE);
+    } catch (e) {}
+    entete();
+  }
+  function ajouter(id, qte) {
+    var l = lire(), trouve = false;
+    l.forEach(function (x) { if (x.id === id) { x.qte = Math.min(99, x.qte + qte); trouve = true; } });
+    if (!trouve) l.push({ id: id, qte: qte });
+    ecrire(l);
+  }
+  window.SonoriaPanier = { racine: racine, lire: lire, ecrire: ecrire, ajouter: ajouter,
+    nombre: nombre, vider: function () { ecrire([]); } };
+  entete();
+  window.addEventListener('pageshow', entete);
+  window.addEventListener('storage', function (e) { if (e.key === CLE) entete(); });
+
+  var b = document.getElementById('bandeau-cookies');
+  var vu = null;
+  try { vu = localStorage.getItem('sonoria-cookies'); } catch (e) {}
+  if (!b || vu) return;
+  b.hidden = false;
+  function marge() { document.body.style.paddingBottom = b.hidden ? '' : b.offsetHeight + 'px'; }
+  marge();
+  window.addEventListener('load', marge);
+  window.addEventListener('resize', marge);
+  document.getElementById('cookies-ok').addEventListener('click', function () {
+    try { localStorage.setItem('sonoria-cookies', 'ok'); } catch (e) {}
+    b.hidden = true;
+    marge();
+  });
+})();
+</script>
+<main class="wrap">
+<h1>Nous contacter</h1>
+<img src="/sonoria/img/balles-textile.jpg" alt="Façade de l'atelier de Roubaix" class="illus">
+<table class="specs">
+  <tr><th>Atelier et siège</th><td>Roubaix (Nord)</td></tr>
+  <tr><th>Téléphone</th><td>03 20 00 00 00</td></tr>
+  <tr><th>E-mail</th><td>bonjour@sonoria.fr</td></tr>
+  <tr><th>Horaires</th><td>du lundi au vendredi, 8 h 30 – 17 h 30</td></tr>
+</table>
+<p><a class="bouton" href="/sonoria/demande-de-devis">Demander un devis</a></p>
+
+<nav class="aussi" aria-label="Voir aussi">
+  <p class="aussi__t">Voir aussi</p>
+  <ul><li><a href="/sonoria/faq">Questions fréquentes</a></li><li><a href="/sonoria/newsletter">S'inscrire à la lettre d'information</a></li></ul>
+</nav>
+
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p class="logo" style="color:#fff">SONORIA</p>
+    <p>Le calme, ça se fabrique.<br>Atelier et siège : Roubaix (Nord) — 1400 m²</p>
+    <ul>
+      <li><a href="/sonoria/qui-sommes-nous">Qui sommes-nous</a></li>
+      <li><a href="/sonoria/demande-de-devis">Demander un devis</a></li>
+      <li><a href="/sonoria/mentions-legales">Mentions légales</a></li>
+      <li><a href="/sonoria/media/plaquette-2021.pdf">Plaquette (PDF)</a></li>
+      <li><a href="/sonoria/media/cgv.pdf">Conditions générales (PDF)</a></li>
+    </ul>
+    <p class="fine">© 2018–2025 Sonoria SAS — Site refondu en 2021</p>
+  </div>
+</footer>
+</body>
+</html>

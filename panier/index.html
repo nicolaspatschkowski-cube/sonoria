@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0N0R1A25X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-S0N0R1A25X');
+  </script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Votre panier — Sonoria</title>
+  <meta name="description" content="">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Inter:wght@400;600&display=block" rel="stylesheet">
+  <link rel="stylesheet" href="/sonoria/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="/sonoria/">SONORIA</a>
+    <nav class="site" aria-label="Menu principal"><ul>
+      <li><a href="/sonoria/">Accueil</a></li>
+      <li><a href="/sonoria/panneaux-acoustiques">Nos panneaux</a></li>
+      <li><a href="/sonoria/bureau-etudes">Bureau d'études</a></li>
+      <li><a href="/sonoria/notre-atelier">L'atelier</a></li>
+      <li><a href="/sonoria/blog">Blog</a></li>
+      <li><a href="/sonoria/contact">Contact</a></li>
+    </ul></nav>
+    <a href="/sonoria/panier" id="lien-panier" style="margin-left:auto;color:var(--ardoise);text-decoration:none;font-size:.94rem">Panier (<span id="panier-compte">0</span>)</a>
+    <a class="bouton" href="/sonoria/demande-de-devis">Demander un devis</a>
+  </div>
+</header>
+<div class="cookies" id="bandeau-cookies" role="region" aria-label="Cookies" hidden>
+  <div class="wrap">
+    <p>Nous utilisons des cookies pour améliorer votre expérience et mesurer l'audience du site. <a href="/sonoria/mentions-legales">En savoir plus</a></p>
+    <button class="bouton" type="button" id="cookies-ok">OK</button>
+  </div>
+</div>
+<script>
+(function () {
+  var CLE = 'sonoria-panier';
+  var lien = document.getElementById('lien-panier');
+  var racine = lien ? lien.getAttribute('href').replace(/\/panier\/?$/, '') : '';
+  function lire() {
+    try {
+      var l = JSON.parse(localStorage.getItem(CLE) || '[]');
+      return Array.isArray(l) ? l.filter(function (x) {
+        return x && typeof x.id === 'string' && x.qte >= 1 && x.qte <= 99;
+      }) : [];
+    } catch (e) { return []; }
+  }
+  function nombre(l) {
+    return (l || lire()).reduce(function (n, x) { return n + x.qte; }, 0);
+  }
+  function entete() {
+    var c = document.getElementById('panier-compte');
+    if (c) c.textContent = nombre();
+  }
+  function ecrire(l) {
+    try {
+      if (l.length) localStorage.setItem(CLE, JSON.stringify(l));
+      else localStorage.removeItem(CLE);
+    } catch (e) {}
+    entete();
+  }
+  function ajouter(id, qte) {
+    var l = lire(), trouve = false;
+    l.forEach(function (x) { if (x.id === id) { x.qte = Math.min(99, x.qte + qte); trouve = true; } });
+    if (!trouve) l.push({ id: id, qte: qte });
+    ecrire(l);
+  }
+  window.SonoriaPanier = { racine: racine, lire: lire, ecrire: ecrire, ajouter: ajouter,
+    nombre: nombre, vider: function () { ecrire([]); } };
+  entete();
+  window.addEventListener('pageshow', entete);
+  window.addEventListener('storage', function (e) { if (e.key === CLE) entete(); });
+
+  var b = document.getElementById('bandeau-cookies');
+  var vu = null;
+  try { vu = localStorage.getItem('sonoria-cookies'); } catch (e) {}
+  if (!b || vu) return;
+  b.hidden = false;
+  function marge() { document.body.style.paddingBottom = b.hidden ? '' : b.offsetHeight + 'px'; }
+  marge();
+  window.addEventListener('load', marge);
+  window.addEventListener('resize', marge);
+  document.getElementById('cookies-ok').addEventListener('click', function () {
+    try { localStorage.setItem('sonoria-cookies', 'ok'); } catch (e) {}
+    b.hidden = true;
+    marge();
+  });
+})();
+</script>
+<main class="wrap">
+<h1>Votre panier</h1>
+<div id="panier-vide">
+<p>Votre panier est vide.</p>
+<p><a class="bouton" href="/sonoria/panneaux-acoustiques">Voir la gamme</a></p>
+</div>
+<div class="tunnel" id="tunnel" hidden>
+<ol class="etapes" aria-label="Étapes de la commande">
+  <li aria-current="step">1. Panier</li>
+  <li>2. Livraison</li>
+  <li>3. Paiement</li>
+</ol>
+
+<section class="etape" id="etape-panier" aria-labelledby="titre-panier">
+  <h2 id="titre-panier" tabindex="-1">Votre sélection</h2>
+  <table class="lignes">
+    <thead><tr><th scope="col">Article</th><th scope="col" class="num">Prix unitaire</th><th scope="col">Quantité</th><th scope="col" class="num">Montant</th><th scope="col"><span class="sr-only">Retirer</span></th></tr></thead>
+    <tbody id="lignes"></tbody>
+  </table>
+  <dl class="totaux"><dt>Sous-total</dt><dd id="sous-total"></dd></dl>
+  <p class="mention">Frais de livraison calculés à l'étape suivante.</p>
+  <p class="actions"><button class="bouton" type="button" id="vers-livraison">Passer à la livraison</button>
+    <a href="/sonoria/panneaux-acoustiques">Continuer mes achats</a></p>
+</section>
+
+<section class="etape" id="etape-livraison" aria-labelledby="titre-livraison" hidden>
+  <h2 id="titre-livraison" tabindex="-1">Adresse de livraison</h2>
+  <form class="commande" id="form-livraison">
+    <p class="consigne">Tous les champs sont obligatoires.</p>
+    <label for="prenom">Prénom</label>
+    <input type="text" id="prenom" autocomplete="given-name" required>
+    <label for="nom">Nom</label>
+    <input type="text" id="nom" autocomplete="family-name" required>
+    <label for="email">Adresse e-mail</label>
+    <input type="email" id="email" autocomplete="email" required>
+    <label for="adresse">Adresse</label>
+    <input type="text" id="adresse" autocomplete="address-line1" required>
+    <label for="cp">Code postal</label>
+    <input type="text" id="cp" autocomplete="postal-code" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5">
+    <label for="ville">Ville</label>
+    <input type="text" id="ville" autocomplete="address-level2" required>
+    <div class="case">
+      <input type="checkbox" id="offres" checked>
+      <label for="offres">Recevoir les offres et nouveautés de Sonoria par e-mail</label>
+    </div>
+    <p class="actions"><button class="bouton" type="submit">Continuer vers le paiement</button>
+      <button class="lien-bouton" type="button" id="retour-panier">Retour au panier</button></p>
+  </form>
+</section>
+
+<section class="etape" id="etape-paiement" aria-labelledby="titre-paiement" hidden>
+  <h2 id="titre-paiement" tabindex="-1">Récapitulatif et paiement</h2>
+  <div class="deux-col">
+    <div>
+      <h3>Votre commande</h3>
+      <ul class="recap" id="recap-lignes"></ul>
+      <dl class="totaux" id="recap-totaux"></dl>
+    </div>
+    <div>
+      <h3>Livraison</h3>
+      <p id="recap-adresse"></p>
+      <p><button class="lien-bouton" type="button" id="retour-livraison">Modifier l'adresse</button></p>
+      <fieldset class="moyens">
+        <legend>Moyen de paiement</legend>
+        <div class="moyen"><input type="radio" name="moyen" id="moyen-carte" value="carte" checked><label for="moyen-carte">Carte bancaire</label></div>
+        <div class="moyen"><input type="radio" name="moyen" id="moyen-paypal" value="paypal"><label for="moyen-paypal">PayPal</label></div>
+        <div class="moyen"><input type="radio" name="moyen" id="moyen-virement" value="virement"><label for="moyen-virement">Virement bancaire</label></div>
+      </fieldset>
+      <p class="actions"><button class="bouton" type="button" id="payer">Payer</button></p>
+      <p class="sr-only" id="paiement-etat" role="status"></p>
+    </div>
+  </div>
+</section>
+</div>
+<script>
+(function () {
+  var P = window.SonoriaPanier;
+  var CATALOGUE = {"mural-uni-60":{"nom":"Panneau mural Feutre Uni 60×60","ref":"SON-MU-6060","prix":89},"mural-uni-120":{"nom":"Panneau mural Feutre Uni 60×120","ref":"SON-MU-6120","prix":149},"mural-motif":{"nom":"Panneau mural Feutre Motif 60×120","ref":"SON-MM-6120","prix":169},"grand-format-120":{"nom":"Panneau grand format 120×120","ref":"SON-GF-1212","prix":289},"absorbeur-angle":{"nom":"Absorbeur d'angle 100×30","ref":"SON-AA-1030","prix":119},"tableau":{"nom":"Tableau acoustique imprimé 80×60","ref":"SON-TA-8060","prix":219},"ecran-visio":{"nom":"Écran de visio 90×60","ref":"SON-EV-9060","prix":179},"rideau":{"nom":"Rideau acoustique 140×260","ref":"SON-RA-1426","prix":349}};
+  function euros(n) {
+    return n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '\u00a0€';
+  }
+  function lignes() {
+    return P.lire().filter(function (x) { return CATALOGUE[x.id]; }).map(function (x) {
+      var c = CATALOGUE[x.id];
+      return { id: x.id, nom: c.nom, ref: c.ref, prix: c.prix, qte: x.qte };
+    });
+  }
+  function montant(l) {
+    return l.reduce(function (s, x) { return s + x.prix * x.qte; }, 0);
+  }
+  var vide = document.getElementById('panier-vide');
+  var tunnel = document.getElementById('tunnel');
+  var etapes = ['etape-panier', 'etape-livraison', 'etape-paiement'].map(function (id) {
+    return document.getElementById(id);
+  });
+  var reperes = tunnel.querySelectorAll('.etapes li');
+  function aller(n) {
+    etapes.forEach(function (s, i) { s.hidden = i !== n - 1; });
+    for (var i = 0; i < reperes.length; i++) {
+      if (i === n - 1) reperes[i].setAttribute('aria-current', 'step');
+      else reperes[i].removeAttribute('aria-current');
+    }
+    if (n === 3) window.SonoriaPaiement.preparer();
+    etapes[n - 1].querySelector('h2').focus();
+  }
+  function cellule(tr, texte, classe) {
+    var td = document.createElement('td');
+    if (classe) td.className = classe;
+    td.textContent = texte;
+    tr.appendChild(td);
+    return td;
+  }
+  function totaux() {
+    document.getElementById('sous-total').textContent = euros(montant(lignes()));
+  }
+  function rendre() {
+    var l = lignes();
+    vide.hidden = l.length > 0;
+    tunnel.hidden = l.length === 0;
+    var corps = document.getElementById('lignes');
+    corps.textContent = '';
+    l.forEach(function (x) {
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      var a = document.createElement('a');
+      a.href = P.racine + '/panneaux-acoustiques/' + x.id;
+      a.textContent = x.nom;
+      var r = document.createElement('div');
+      r.className = 'ref';
+      r.textContent = 'Réf. ' + x.ref;
+      td.appendChild(a);
+      td.appendChild(r);
+      tr.appendChild(td);
+      cellule(tr, euros(x.prix), 'num');
+      var tq = document.createElement('td');
+      var q = document.createElement('input');
+      q.type = 'number';
+      q.min = '1';
+      q.max = '99';
+      q.value = x.qte;
+      q.inputMode = 'numeric';
+      q.setAttribute('aria-label', 'Quantité, ' + x.nom);
+      tq.appendChild(q);
+      tr.appendChild(tq);
+      var tm = cellule(tr, euros(x.prix * x.qte), 'num');
+      q.addEventListener('change', function () {
+        var n = parseInt(q.value, 10);
+        n = n >= 1 ? Math.min(99, n) : 1;
+        q.value = n;
+        P.ecrire(P.lire().map(function (y) { if (y.id === x.id) y.qte = n; return y; }));
+        tm.textContent = euros(x.prix * n);
+        totaux();
+      });
+      var tb = document.createElement('td');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'lien-bouton';
+      b.textContent = 'Retirer';
+      b.setAttribute('aria-label', 'Retirer ' + x.nom + ' du panier');
+      b.addEventListener('click', function () {
+        P.ecrire(P.lire().filter(function (y) { return y.id !== x.id; }));
+        rendre();
+        (tunnel.hidden ? vide.querySelector('a') : document.getElementById('titre-panier')).focus();
+      });
+      tb.appendChild(b);
+      tr.appendChild(tb);
+      corps.appendChild(tr);
+    });
+    totaux();
+  }
+  document.getElementById('vers-livraison').addEventListener('click', function () { aller(2); });
+  document.getElementById('retour-panier').addEventListener('click', function () { aller(1); });
+  document.getElementById('retour-livraison').addEventListener('click', function () { aller(2); });
+  document.getElementById('form-livraison').addEventListener('submit', function (e) {
+    e.preventDefault();
+    aller(3);
+  });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) location.reload(); });
+  window.SonoriaTunnel = { lignes: lignes, montant: montant, euros: euros };
+  var connus = P.lire().filter(function (x) { return CATALOGUE[x.id]; });
+  if (connus.length !== P.lire().length) P.ecrire(connus);
+  rendre();
+})();
+</script>
+<script>
+(function () {
+  var T = window.SonoriaTunnel;
+  /* Frais de livraison, selon le montant des articles */
+  function fraisDePort(articles) {
+    if (articles > 300) return 0;
+    if (articles > 120) return 9.90;
+    return 14.90;
+  }
+  function ligne(dl, terme, valeur, classe) {
+    var dt = document.createElement('dt');
+    var dd = document.createElement('dd');
+    dt.textContent = terme;
+    dd.textContent = valeur;
+    if (classe) { dt.className = classe; dd.className = classe; }
+    dl.appendChild(dt);
+    dl.appendChild(dd);
+  }
+  function champ(id) { return document.getElementById(id).value.trim(); }
+  function preparer() {
+    var l = T.lignes();
+    var articles = T.montant(l);
+    var port = fraisDePort(articles);
+    var total = Math.round((articles + port) * 100) / 100;
+    var ul = document.getElementById('recap-lignes');
+    ul.textContent = '';
+    l.forEach(function (x) {
+      var li = document.createElement('li');
+      var a = document.createElement('span');
+      var b = document.createElement('span');
+      a.textContent = x.qte + ' × ' + x.nom;
+      b.className = 'num';
+      b.textContent = T.euros(x.prix * x.qte);
+      li.appendChild(a);
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+    var dl = document.getElementById('recap-totaux');
+    dl.textContent = '';
+    ligne(dl, 'Articles', T.euros(articles));
+    ligne(dl, 'Frais de livraison', port ? T.euros(port) : 'Offerts');
+    ligne(dl, 'Total TTC', T.euros(total), 'total');
+    var adr = document.getElementById('recap-adresse');
+    adr.textContent = '';
+    [champ('prenom') + ' ' + champ('nom'), champ('adresse'), champ('cp') + ' ' + champ('ville'), champ('email')]
+      .forEach(function (t, i) {
+        if (i) adr.appendChild(document.createElement('br'));
+        adr.appendChild(document.createTextNode(t));
+      });
+    var payer = document.getElementById('payer');
+    payer.disabled = false;
+    payer.textContent = 'Payer ' + T.euros(total);
+    document.getElementById('paiement-etat').textContent = '';
+  }
+  document.getElementById('payer').addEventListener('click', function () {
+    var payer = this;
+    var numero = 'SON-' + new Date().getFullYear() + ('000' + Math.floor(Math.random() * 10000)).slice(-4);
+    payer.disabled = true;
+    payer.textContent = 'Redirection vers la page de paiement sécurisé…';
+    document.getElementById('paiement-etat').textContent = payer.textContent;
+    setTimeout(function () {
+      location.assign(window.SonoriaPanier.racine + '/commande-confirmee/?commande=' + numero);
+    }, 1500);
+  });
+  window.SonoriaPaiement = { preparer: preparer };
+})();
+</script>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p class="logo" style="color:#fff">SONORIA</p>
+    <p>Le calme, ça se fabrique.<br>Atelier et siège : Roubaix (Nord) — 1400 m²</p>
+    <ul>
+      <li><a href="/sonoria/qui-sommes-nous">Qui sommes-nous</a></li>
+      <li><a href="/sonoria/demande-de-devis">Demander un devis</a></li>
+      <li><a href="/sonoria/mentions-legales">Mentions légales</a></li>
+      <li><a href="/sonoria/media/plaquette-2021.pdf">Plaquette (PDF)</a></li>
+      <li><a href="/sonoria/media/cgv.pdf">Conditions générales (PDF)</a></li>
+    </ul>
+    <p class="fine">© 2018–2025 Sonoria SAS — Site refondu en 2021</p>
+  </div>
+</footer>
+</body>
+</html>
